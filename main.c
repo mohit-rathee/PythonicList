@@ -4,25 +4,29 @@
 int main(){
     //Initialise list
     list* myList = initList();
+    print(myList);
 
     //Append
     //Don't mismatch enumType and valueType
     myObj val = {.Class=Char,.Data={.chr='b'}}; 
     append(myList, val); 
+
+    //Append when capacity == size
+    append(myList, val);
+    append(myList, val);
+    append(myList, val);
+    append(myList, val);
     print(myList);
 
     //Update
-    int index = 0;
+    int index = 5;
     myObj object = {.Class=String,.Data={.str="MOHIT"}};
-    update(myList, &index, object);
 
 
     //Get
-    myObj result = get(myList,&index);
-    printObj(&result);
+//    myObj result = get(myList,&index);
+  //  printObj(&result);
 
     //Pop
-    myObj waste= pop(myList);
-    printObj(&waste);
-    print(myList);
+    //myObj waste= pop(myList);
 }

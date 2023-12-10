@@ -3,7 +3,7 @@
 #include "methods.c"
 
 list* initList(){
-    int capacity = 50;
+    int capacity = 4;
     list *my_list = malloc(sizeof(list));
     my_list->capacity = capacity;
     my_list->size = 0;
@@ -12,8 +12,8 @@ list* initList(){
     my_list->arr[0]=(myObj){.Class=Int,.Data={.num=5}};
     my_list->arr[1]=(myObj){.Class=Char,.Data={.chr='f'}};
     my_list->arr[2]=(myObj){.Class=String,.Data={.str="AAAA"}};
-    my_list->arr[3]=(myObj){.Class=Bool,.Data={.boool=true}};
-    my_list->size=3; 
+    my_list->arr[3]=(myObj){.Class=Bool,.Data={.boool=false}};
+    my_list->size=4; 
     return my_list;
 }
 
@@ -55,8 +55,15 @@ void print(list *my_list){
 void append(list* my_list, myObj object){
     int capacity = my_list->capacity;
     int size = my_list->size;
-    if (size>capacity){
-        //realloc
+    if (size>=capacity){
+        //reallocating arr not my_list
+        capacity*=2;
+        my_list->arr = realloc(my_list->arr, capacity*sizeof(myObj));
+        my_list->capacity = capacity;
+        if(my_list->arr == NULL){
+            printf("out of memory");
+            return;
+        }
     }
     my_list->arr[size]= object;
     my_list->size++;
