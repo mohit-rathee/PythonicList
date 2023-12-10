@@ -12,5 +12,7 @@ myObj pop(list*);
 
 myObj get(list*, int* index);
 
+void Free(list**);
+
 void update(list* my_list,int* index, myObj);
 

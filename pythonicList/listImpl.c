@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "methods.c"
@@ -40,6 +41,7 @@ void printObj(myObj* object){
 }
 
 void print(list *my_list){
+    if(my_list==NULL){return;}
     int capacity = my_list->capacity;
     int size = my_list->size;
     printf("capacity: %d \n",capacity);
@@ -55,6 +57,7 @@ void print(list *my_list){
 }
 
 void append(list* my_list, myObj object){
+    if(my_list==NULL){return;}
     int capacity = my_list->capacity;
     int size = my_list->size;
     if (size>=capacity){
@@ -73,15 +76,8 @@ void append(list* my_list, myObj object){
     my_list->size++;
 }
 
-int min(int a,int b){
-    if (a>b){
-        return b;
-    }else{
-        return a;
-    }
-}
-
 myObj pop(list* my_list){
+    if(my_list==NULL){return (myObj){.Class=Null};}
     int size = my_list->size;
     if (size==0){return (myObj){.Class=Null};}
     myObj retVal = my_list->arr[size-1];
@@ -101,16 +97,17 @@ myObj pop(list* my_list){
 }
 
 void validIndex(int* idx, int* size){ // It will actuall return the index
-    int index = * idx;
-    if(index<0){index=*size-index;}
+    int index = *idx;
+    if(index<0){*idx+=*size;}
     if(index>=*size && index<0){
         idx = NULL;
     }
 }
 
 myObj get(list* my_list,int* index){
+    if(my_list==NULL){return (myObj){.Class=Null};}
     validIndex(index, &my_list->size);
-    if (index){
+    if (*index){
         myObj object = my_list->arr[*index];
         return object;
     }else{
@@ -118,9 +115,16 @@ myObj get(list* my_list,int* index){
     }
 }
 
+void Free(list** my_list){
+    if(*my_list==NULL){return;}
+    free((*my_list)->arr);
+    free(*my_list);
+    *my_list=NULL;
+}
+
 void update(list* my_list, int* index, myObj object){
+    if(my_list==NULL){return;}
     validIndex(index, &my_list->size);
-    printf("%p",index);
     if (index){
         my_list->arr[*index] = object;
     }else{
