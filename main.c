@@ -12,7 +12,7 @@ int main(){
     print(myList);
 
     //Update
-    int index = 3;
+    int index = 0;
     myObj object = {.Class=String,.Data={.str="MOHIT"}};
     update(myList, &index, object);
 

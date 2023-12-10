@@ -73,17 +73,14 @@ myObj pop(list* my_list){
 void validIndex(int* idx, int* size){ // It will actuall return the index
     int index = * idx;
     if(index<0){index=*size-index;}
-    if(index<*size && index>0){
-        *idx = index;
-    }else{
-        printf("list index out of range.\n");
+    if(index>=*size && index<0){
         idx = NULL;
     }
 }
 
 myObj get(list* my_list,int* index){
     validIndex(index, &my_list->size);
-    if (*index){
+    if (index){
         myObj object = my_list->arr[*index];
         return object;
     }else{
@@ -93,7 +90,10 @@ myObj get(list* my_list,int* index){
 
 void update(list* my_list, int* index, myObj object){
     validIndex(index, &my_list->size);
-    if (*index){
+    printf("%p",index);
+    if (index){
         my_list->arr[*index] = object;
+    }else{
+    printf("list index out of range.\n");
     }
 }
