@@ -9,14 +9,9 @@ int main(){
     //Append
     //Don't mismatch enumType and valueType
     myObj val = {.Class=Char,.Data={.chr='b'}}; 
-    append(myList, val); 
-
-    //Append when capacity == size
-    append(myList, val);
-    append(myList, val);
-    append(myList, val);
-    append(myList, val);
-    print(myList);
+    for(int i=0; i<200000000; i++){
+        append(myList, val); 
+    }
 
     //Update
     int index = 5;
@@ -24,9 +19,12 @@ int main(){
 
 
     //Get
-//    myObj result = get(myList,&index);
-  //  printObj(&result);
+    //myObj result = get(myList,&index);
+    //printObj(&result);
 
     //Pop
-    //myObj waste= pop(myList);
+    myObj waste= pop(myList);
+    for(int i=0; i<200000000; i++){
+        waste=pop(myList); 
+    }
 }

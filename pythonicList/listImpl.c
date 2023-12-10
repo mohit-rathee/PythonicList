@@ -2,8 +2,10 @@
 #include <stdlib.h>
 #include "methods.c"
 
+#define MIN_CAPACITY 50
+
 list* initList(){
-    int capacity = 4;
+    int capacity = MIN_CAPACITY;
     list *my_list = malloc(sizeof(list));
     my_list->capacity = capacity;
     my_list->size = 0;
@@ -57,9 +59,11 @@ void append(list* my_list, myObj object){
     int size = my_list->size;
     if (size>=capacity){
         //reallocating arr not my_list
+        printf("expanding ");
         capacity*=2;
         my_list->arr = realloc(my_list->arr, capacity*sizeof(myObj));
         my_list->capacity = capacity;
+        printf("%d\n",my_list->capacity);
         if(my_list->arr == NULL){
             printf("out of memory");
             return;
@@ -69,11 +73,30 @@ void append(list* my_list, myObj object){
     my_list->size++;
 }
 
+int min(int a,int b){
+    if (a>b){
+        return b;
+    }else{
+        return a;
+    }
+}
+
 myObj pop(list* my_list){
     int size = my_list->size;
-    if (size<0){return (myObj){.Class=Null};}
+    if (size==0){return (myObj){.Class=Null};}
     myObj retVal = my_list->arr[size-1];
     my_list->size--;
+    //
+    if(my_list->size*4<my_list->capacity){
+        if(my_list->capacity > MIN_CAPACITY){
+            //realloc with half size
+            printf("shrinking ");
+            my_list->capacity /= 2;
+            printf("%d\n",my_list->capacity);
+            my_list->arr =
+                realloc(my_list->arr, my_list->capacity*sizeof(myObj));
+        }
+    }
     return retVal;
 }
 
