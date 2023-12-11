@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <strings.h>
 #include "methods.c"
 
@@ -95,9 +96,14 @@ myObj pop(list* my_list, int idx){
     myObj retVal = my_list->arr[*index];
     if(*index != -1){
         // I have to just copy el's after index to their predecesor. 
-        for (int i=*index+1;i<size;i++){
-            arr[i-1]=arr[i];
-        }
+        //for (int i=*index+1;i<size;i++){
+        //    arr[i-1]=arr[i];
+        //}
+        memmove(
+            &arr[*index],
+            &arr[*index+1],
+            (size-*index-1) * sizeof(myObj)
+        );
     }
     my_list->size--;
     shrink(my_list);
