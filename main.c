@@ -6,13 +6,16 @@ int main(){
     //Initialise list
     list* myList = initList();
     
-    int index =-4;
+    int index;
 
     print(myList);
 
-    index=0;
-    myObj waste= pop(myList,index);
-    printObj(&waste);
+    index=2;
+    myObj object= pop(myList,index);
+    print(myList);
+
+    index= 1;
+    insert(myList, index, &object);
 
     print(myList);
     Free(&myList);
