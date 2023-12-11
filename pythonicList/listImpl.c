@@ -61,23 +61,29 @@ void append(list* my_list, myObj object){
     if(my_list==NULL){return;}
     int capacity = my_list->capacity;
     int size = my_list->size;
-    if (size>=capacity){
+    if (size==capacity){
         //reallocating arr not my_list
-        printf("expanding ");
-        capacity*=2;
-        my_list->arr = realloc(my_list->arr, capacity*sizeof(myObj));
-        my_list->capacity = capacity;
-        printf("%d\n",my_list->capacity);
-        if(my_list->arr == NULL){
-            printf("out of memory");
-            return;
-        }
+        expand(my_list);
     }
     my_list->arr[size]= object;
     my_list->size++;
 }
 
-myObj pop(list* my_list, int* index){
+void expand(list* my_list){
+    my_list->arr = realloc(
+        my_list->arr,
+        my_list->capacity*sizeof(myObj)*2 //double capacity
+    );
+    my_list->capacity*=2;
+    printf("expanding %d\n",my_list->capacity);
+    if(my_list->arr == NULL){
+        printf("out of memory");
+        return;
+    }
+}
+
+myObj pop(list* my_list, int idx){
+    int* index = &idx;
     validIndex(&index, &my_list->size);
     if(my_list==NULL || index==NULL){
         printf("list index out of range.\n");
@@ -94,7 +100,12 @@ myObj pop(list* my_list, int* index){
         }
     }
     my_list->size--;
+    shrink(my_list);
 
+    return retVal;
+}
+
+void shrink(list* my_list){
     if(my_list->size*4<my_list->capacity){
         if(my_list->capacity > MIN_CAPACITY){
             //realloc with half size
@@ -102,14 +113,12 @@ myObj pop(list* my_list, int* index){
             my_list->capacity /= 2;
             printf("%d\n",my_list->capacity);
             my_list->arr =
-                realloc(arr, my_list->capacity*sizeof(myObj));
+                realloc(my_list->arr, my_list->capacity*sizeof(myObj));
         }
     }
-    return retVal;
 }
 
 void validIndex(int** idx, int* size){ // It will actuall return the index
-    printf("%d\n",**idx);
     int index = **idx;
     if(index<0){index+=*size;}
     if(index>=*size || index<0){
@@ -119,8 +128,9 @@ void validIndex(int** idx, int* size){ // It will actuall return the index
     }
 }
 
-myObj get(list* my_list,int* index){
+myObj get(list* my_list,int idx){
     if(my_list==NULL){return (myObj){.Class=Null};}
+    int* index = &idx;
     validIndex(&index, &my_list->size);
     if (index){
         myObj object = my_list->arr[*index];
@@ -138,8 +148,9 @@ void Free(list** my_list){
     *my_list=NULL;
 }
 
-void update(list* my_list, int* index, myObj object){
+void update(list* my_list, int idx, myObj object){
     if(my_list==NULL){return;}
+    int* index = &idx;
     validIndex(&index, &my_list->size);
     if (index){
         my_list->arr[*index] = object;

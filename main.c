@@ -8,16 +8,27 @@ int main(){
 
     //Append-Update-Get-Pop-Free
     myObj object = {.Class=String,.Data={.str="MOHIT"}};
-    append(myList, object); 
+    for(int i=0;i<102;i++){
+        append(myList, object); 
+    }
 
+
+    myObj waste;
+    int s = -1;
+    for(int i=0;i<102;i++){
+        pop(myList,s);
+    }
+
+    print(myList);
+    
     int index =-4;
     object =(myObj){.Class=Int,.Data={.num=5}};
-    update(myList, &index, object);
+    update(myList, index, object);
     printf("-----------");
-    print(myList);
+    //print(myList);
 
-    index=20;
-    myObj waste= pop(myList,&index);
+    index=0;
+    waste= pop(myList,index);
     printObj(&waste);
 
     print(myList);
