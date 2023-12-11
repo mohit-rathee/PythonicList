@@ -76,13 +76,21 @@ void append(list* my_list, myObj object){
     my_list->size++;
 }
 
-myObj pop(list* my_list){
+myObj pop(list* my_list, int* index){
+    validIndex(index, &my_list->size);
     if(my_list==NULL){return (myObj){.Class=Null};}
     int size = my_list->size;
+    myObj* arr = my_list->arr;
     if (size==0){return (myObj){.Class=Null};}
-    myObj retVal = my_list->arr[size-1];
+    myObj retVal = my_list->arr[*index];
+    if(*index != -1){
+        // I have to just copy el's after index to their predecesor. 
+        for (int i=*index+1;i<size;i++){
+            arr[i-1]=arr[i];
+        }
+    }
     my_list->size--;
-    //
+
     if(my_list->size*4<my_list->capacity){
         if(my_list->capacity > MIN_CAPACITY){
             //realloc with half size
@@ -90,7 +98,7 @@ myObj pop(list* my_list){
             my_list->capacity /= 2;
             printf("%d\n",my_list->capacity);
             my_list->arr =
-                realloc(my_list->arr, my_list->capacity*sizeof(myObj));
+                realloc(arr, my_list->capacity*sizeof(myObj));
         }
     }
     return retVal;

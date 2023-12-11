@@ -16,13 +16,11 @@ int main(){
     printf("-----------");
     print(myList);
 
-    myObj result = get(myList,&index);
-    printObj(&result);
-
-    myObj waste= pop(myList);
+    index= 0;
+    myObj waste= pop(myList,&index);
     printObj(&waste);
 
+    print(myList);
     Free(&myList);
-    printf("%p\n",myList);
 
 }

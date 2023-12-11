@@ -8,11 +8,13 @@ void print(list*);
 
 void append(list*, myObj);
 
-myObj pop(list*);
+myObj pop(list*,int*);
 
-myObj get(list*, int* index);
+void validIndex(int* idx, int* size);
+
+myObj get(list*, int*);
 
 void Free(list**);
 
-void update(list* my_list,int* index, myObj);
+void update(list*,int*, myObj);
 
