@@ -10,7 +10,7 @@ void append(list*, myObj);
 
 myObj pop(list*,int*);
 
-void validIndex(int* idx, int* size);
+void validIndex(int** idx, int* size);
 
 myObj get(list*, int*);
 

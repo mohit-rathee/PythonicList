@@ -10,13 +10,13 @@ int main(){
     myObj object = {.Class=String,.Data={.str="MOHIT"}};
     append(myList, object); 
 
-    int index =-2;
+    int index =-4;
     object =(myObj){.Class=Int,.Data={.num=5}};
     update(myList, &index, object);
     printf("-----------");
     print(myList);
 
-    index= 0;
+    index=20;
     myObj waste= pop(myList,&index);
     printObj(&waste);
 
