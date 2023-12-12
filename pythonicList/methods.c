@@ -6,9 +6,9 @@ void printObj(myObj*);
 
 void print(list*);
 
-void append(list*, myObj*);
+void append(list*, myObj);
 
-void insert(list*, int, myObj*);
+void insert(list*, int, myObj);
 
 void add(list*, int, list*);
 

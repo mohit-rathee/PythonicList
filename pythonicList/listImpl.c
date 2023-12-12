@@ -53,7 +53,7 @@ void print(list *my_list){
 
 }
 
-void append(list* my_list, myObj* object){
+void append(list* my_list, myObj object){
     if(my_list==NULL){return;}
     int capacity = my_list->capacity;
     int size = my_list->size;
@@ -61,7 +61,7 @@ void append(list* my_list, myObj* object){
         //reallocating arr not my_list
         expand(my_list,2);
     }
-    my_list->arr[size]= *object;
+    my_list->arr[size]= object;
     my_list->size++;
 }
 
@@ -89,7 +89,7 @@ void add(list* my_list, int idx, list* sub_list){
     my_list->size+=sub_list->size;
 }
 
-void insert(list* my_list, int idx, myObj* object){
+void insert(list* my_list, int idx, myObj object){
     int* index = &idx; // *index will be the index.
     int size = my_list->size;
     int capacity = my_list->capacity;
@@ -106,7 +106,7 @@ void insert(list* my_list, int idx, myObj* object){
         arrToIndex,
         (size - *index) * sizeof(myObj)
     );
-    *arrToIndex = *object;
+    *arrToIndex = object;
     my_list->size++;
 }
 
@@ -182,6 +182,13 @@ myObj get(list* my_list,int idx){
 
 void Free(list** my_list){
     if(*my_list==NULL){return;}
+    myObj* arr = (*my_list)->arr;
+    for(int i=0;i < (*my_list)->size;i++){
+        //free strings and pointers.
+        if(arr[i].Class==String){
+            free(arr[i].Data.str);
+        }
+    }
     free((*my_list)->arr);
     free(*my_list);
     *my_list=NULL;
