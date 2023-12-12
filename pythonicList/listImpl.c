@@ -66,10 +66,13 @@ void append(list* my_list, myObj object){
 }
 
 void add(list* my_list, int idx, list* sub_list){
-    int* index = &idx;
+    int *index = &idx;
     int size = my_list->size;
     int capacity = my_list->capacity;
     validIndex(&index,size);
+    printf("%d\n",size);
+    printf("%d\n",capacity);
+    if(index==NULL){return;}
     int growthFac = size + sub_list->size - capacity;
     growthFac = (int)(growthFac/MIN_CAPACITY)+2;
     if(growthFac>0){
@@ -94,7 +97,7 @@ void insert(list* my_list, int idx, myObj object){
     int size = my_list->size;
     int capacity = my_list->capacity;
     validIndex(&index,size);
-    if(*index==size-1){
+    if(index && *index==size-1){
         return append(my_list, object);
     }else if(size==capacity){
         expand(my_list,2);//realloc
@@ -126,7 +129,6 @@ myObj pop(list* my_list, int idx){
     int* index = &idx;
     validIndex(&index, my_list->size);
     if(my_list==NULL || index==NULL){
-        printf("list index out of range.\n");
         return (myObj){.Class=Null};
     }
     int size = my_list->size;
@@ -160,7 +162,8 @@ void shrink(list* my_list){
 void validIndex(int** idx, int size){ // It will actuall return the index
     int index = **idx;
     if(index<0){index+=size;}
-    if(index>=size || index<0){
+    if(index!=0 && (index>=size || index<0)){
+        printf("list index out of range.\n");
         *idx = NULL;
     }else{
         **idx = index;
@@ -175,7 +178,6 @@ myObj get(list* my_list,int idx){
         myObj object = my_list->arr[*index];
         return object;
     }else{
-        printf("list index out of range.\n");
         return (myObj){.Class=Null};
     }
 }
@@ -200,7 +202,5 @@ void update(list* my_list, int idx, myObj object){
     validIndex(&index, my_list->size);
     if (index){
         my_list->arr[*index] = object;
-    }else{
-        printf("list index out of range.\n");
     }
 }
