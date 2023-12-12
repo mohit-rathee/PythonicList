@@ -1,3 +1,4 @@
+#include <math.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -5,7 +6,7 @@
 #include <strings.h>
 #include "methods.c"
 
-#define MIN_CAPACITY 50
+#define MIN_CAPACITY 4
 
 list* initList(){
     int capacity = MIN_CAPACITY;
@@ -13,12 +14,6 @@ list* initList(){
     my_list->capacity = capacity;
     my_list->size = 0;
     my_list->arr = (myObj *) malloc(capacity*sizeof(myObj)) ; 
-    //filing data
-    my_list->arr[0]=(myObj){.Class=Int,.Data={.num=5}};
-    my_list->arr[1]=(myObj){.Class=Char,.Data={.chr='f'}};
-    my_list->arr[2]=(myObj){.Class=String,.Data={.str="AAAA"}};
-    my_list->arr[3]=(myObj){.Class=Bool,.Data={.boool=false}};
-    my_list->size=4; 
     return my_list;
 }
 
@@ -64,21 +59,45 @@ void append(list* my_list, myObj* object){
     int size = my_list->size;
     if (size==capacity){
         //reallocating arr not my_list
-        expand(my_list);
+        expand(my_list,2);
     }
     my_list->arr[size]= *object;
     my_list->size++;
 }
 
-void insert(list* my_list, int idx, myObj* object){
+void add(list* my_list, int idx, list* sub_list){
     int* index = &idx;
     int size = my_list->size;
     int capacity = my_list->capacity;
     validIndex(&index,size);
-    if(*index==-1 || *index==size-1){
+    int growthFac = size + sub_list->size - capacity;
+    growthFac = (int)(growthFac/MIN_CAPACITY)+2;
+    if(growthFac>0){
+        expand(my_list,growthFac);
+    }
+    myObj* arrToIndex = my_list->arr + *index;
+    memmove(
+        arrToIndex+ sub_list->size,
+        arrToIndex,
+        (my_list->size-*index) * sizeof(myObj)
+    );
+    memmove(
+        my_list->arr + *index,
+        sub_list->arr,
+        sub_list->size * sizeof(myObj)
+    );
+    my_list->size+=sub_list->size;
+}
+
+void insert(list* my_list, int idx, myObj* object){
+    int* index = &idx; // *index will be the index.
+    int size = my_list->size;
+    int capacity = my_list->capacity;
+    validIndex(&index,size);
+    if(*index==size-1){
         return append(my_list, object);
     }else if(size==capacity){
-        expand(my_list);//realloc
+        expand(my_list,2);//realloc
     }
     //memmove
     myObj* arrToIndex = my_list->arr + *index;
@@ -91,13 +110,12 @@ void insert(list* my_list, int idx, myObj* object){
     my_list->size++;
 }
 
-void expand(list* my_list){
+void expand(list* my_list, int growthFac){
     my_list->arr = realloc(
         my_list->arr,
-        my_list->capacity*sizeof(myObj)*2 //double capacity
+        (my_list->capacity*sizeof(myObj))*growthFac //double capacity
     );
-    my_list->capacity*=2;
-    printf("expanding %d\n",my_list->capacity);
+    my_list->capacity*=growthFac;
     if(my_list->arr == NULL){
         printf("out of memory");
         return;
@@ -132,7 +150,6 @@ void shrink(list* my_list){
     if(my_list->size*4<my_list->capacity){
         if(my_list->capacity > MIN_CAPACITY){
             //realloc with half size
-            printf("shrinking ");
             my_list->capacity /= 2;
             my_list->arr =
                 realloc(my_list->arr, my_list->capacity*sizeof(myObj));

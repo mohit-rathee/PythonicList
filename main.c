@@ -5,19 +5,24 @@
 int main(){
     //Initialise list
     list* myList = initList();
-    
+    myObj object = {.Class=Int,{.num=5}};
     int index;
-
-    print(myList);
-
     index=2;
-    myObj object= pop(myList,index);
-    print(myList);
+    for (int i=0;i<15;i++){
+        append(myList,&object);
+    }
 
-    index= 1;
-    insert(myList, index, &object);
+    list* secondList = initList();
+    object =(myObj){.Class=String,{.str="AAAA"}};
+    for (int i=0;i<4;i++){
+        append(secondList,&object);
+    }
+    
+    add(myList,index,secondList);
+
 
     print(myList);
+    Free(&secondList);
     Free(&myList);
 
 }

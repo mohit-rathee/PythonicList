@@ -10,13 +10,15 @@ void append(list*, myObj*);
 
 void insert(list*, int, myObj*);
 
+void add(list*, int, list*);
+
 myObj pop(list*,int);
 
 void validIndex(int**, int);
 
 void shrink(list*);
 
-void expand(list*);
+void expand(list*, int);
 
 myObj get(list*, int);
 
