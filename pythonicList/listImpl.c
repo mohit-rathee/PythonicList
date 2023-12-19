@@ -182,6 +182,10 @@ myObj get(list* my_list,int idx){
     }
 }
 
+int len(list* my_list){
+    return my_list->size;
+}
+
 void Free(list** my_list){
     if(*my_list==NULL){return;}
     myObj* arr = (*my_list)->arr;

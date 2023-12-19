@@ -22,6 +22,8 @@ void expand(list*, int);
 
 myObj get(list*, int);
 
+int len(list*);
+
 void Free(list**);
 
 void update(list*,int, myObj);
