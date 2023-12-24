@@ -23,7 +23,7 @@ void printObj(myObj* object){
             printf("<class: int> <data: %d>\n",object->Data.num);
             break;
         case String:
-            printf("<class: String> <data: \"%s\">\n",object->Data.str);
+            printf("<class: String> <data: \"%s\"><refs: %d>\n",object->Data.ref->value,object->Data.ref->refs);
             break;
         case Char:
             printf("<class: Char> <data: '%c'>\n",object->Data.chr);
@@ -53,6 +53,16 @@ void print(list *my_list){
 
 }
 
+myObj create_myObj(char* string){
+    // Do checks in future.
+    myObj object = {.Class=String};
+    refrences* ref_p = malloc(sizeof(refrences));
+    ref_p->value=strdup(string);
+    ref_p->refs=1;
+    object.Data = (value){.ref=ref_p};
+    return object;
+}
+
 void append(list* my_list, myObj object){
     if(my_list==NULL){return;}
     int capacity = my_list->capacity;
@@ -70,26 +80,33 @@ void add(list* my_list, int idx, list* sub_list){
     int size = my_list->size;
     int capacity = my_list->capacity;
     validIndex(&index,size);
-    printf("%d\n",size);
-    printf("%d\n",capacity);
     if(index==NULL){return;}
     int growthFac = size + sub_list->size - capacity;
     growthFac = (int)(growthFac/MIN_CAPACITY)+2;
     if(growthFac>0){
         expand(my_list,growthFac);
     }
-    myObj* arrToIndex = my_list->arr + *index;
+    myObj* arrToIndex = my_list->arr + idx;
+    // shift original arr
     memmove(
         arrToIndex+ sub_list->size,
         arrToIndex,
-        (my_list->size-*index) * sizeof(myObj)
-    );
-    memmove(
-        my_list->arr + *index,
-        sub_list->arr,
-        sub_list->size * sizeof(myObj)
+        (my_list->size-idx) * sizeof(myObj)
     );
     my_list->size+=sub_list->size;
+
+    // copy sub_list to my_list
+    //memmove(
+    //    my_list->arr + idx,
+    //    sub_list->arr,
+    //    sub_list->size * sizeof(myObj)
+    //);
+    for(int i=0;i<sub_list->size;i++){
+        if(sub_list->arr[i].Class==String){
+            sub_list->arr[i].Data.ref->refs+=1;
+        }
+        my_list->arr[i+idx] = sub_list->arr[i];
+    }
 }
 
 void insert(list* my_list, int idx, myObj object){
@@ -192,7 +209,10 @@ void Free(list** my_list){
     for(int i=0;i < (*my_list)->size;i++){
         //free strings and pointers.
         if(arr[i].Class==String){
-            free(arr[i].Data.str);
+            if(arr[i].Data.ref->refs==1){
+                free(arr[i].Data.ref->value);
+            }
+            arr[i].Data.ref->refs-=1;
         }
     }
     free((*my_list)->arr);

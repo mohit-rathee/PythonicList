@@ -4,17 +4,25 @@
 
 int main(){
     char* Str="AAASDFSDFASDFASFDASdf";
-    myObj object = {.Class=String};
+    //Initialise list
     list* my_list = initList();
-    for (int i=0; i<10;i++) {
-        object.Data.str=strdup(Str);
+    //put strings
+    for (int i=0; i<2000000;i++) {
+        myObj object = create_myObj(Str);
+        append(my_list, object);
+    }
+    //put integers
+    for (int i=0; i<90000000;i++) {
+        myObj object = (myObj){.Class=Int,.Data={.num=444}};
         append(my_list, object);
     }
     list* new_list = initList();
     add(new_list,0,my_list);
-    print(my_list);
-    print(new_list);
     Free(&my_list);
+    Free(&new_list);
+    char r;
+    scanf("%c",&r);
+
     
     //the sublist should not be freed. If you are freeing the major one.
     // I could make a count on each myObj telling number of connections

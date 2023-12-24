@@ -28,3 +28,4 @@ void Free(list**);
 
 void update(list*,int, myObj);
 
+myObj create_myObj(char*);

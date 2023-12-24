@@ -8,12 +8,16 @@ typedef enum {
     Null,
 } myclass;
 
+typedef struct {
+    int refs;
+    char* value;
+} refrences;
+
 typedef union {
     int num;
-    char* str;
+    refrences* ref;
     char chr;
     _Bool boool;
-
 } value;
 
 typedef struct{
@@ -26,3 +30,4 @@ typedef struct {
     int size;
     myObj* arr;
 } list ;
+
