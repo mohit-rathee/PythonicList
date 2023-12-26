@@ -1,3 +1,4 @@
+#include <malloc.h>
 #include "main.h"
 #include <string.h>
 #include <strings.h>
@@ -7,21 +8,40 @@ int main(){
     //Initialise list
     list* my_list = initList();
     //put strings
-    for (int i=0; i<2000000;i++) {
+    for (int i=0; i<50000000;i++) {
         myObj object = create_myObj(Str);
         append(my_list, object);
     }
+    printf("%s","Added 10000000strings.\n");
+
     //put integers
-    for (int i=0; i<90000000;i++) {
+    for (int i=0; i<10000000;i++) {
         myObj object = (myObj){.Class=Int,.Data={.num=444}};
         append(my_list, object);
     }
-    list* new_list = initList();
-    add(new_list,0,my_list);
+    printf("%s","Added 10000000 integers.\n");
+
+    for (int i=0; i<10000000;i++) {
+        myObj object = (myObj){.Class=Bool,.Data={.boool=1}};
+        append(my_list, object);
+    }
+    printf("%s","Added 10000000booleans.\n");
+    for (int i=0; i<10000000;i++) {
+        myObj object = (myObj){.Class=Char,.Data={.chr='m'}};
+        append(my_list, object);
+    }
+    printf("%s","Added 10000000characters.\n");
     Free(&my_list);
-    Free(&new_list);
-    char r;
-    scanf("%c",&r);
+    printf("%s","Freed the list.\n");
+
+    printf("%s","check the ram usage graph.\n");
+
+    printf("%s","👍\n");
+    malloc_trim(0);  // Release free memory to the system
+    // This motivates me to write my own heap.
+    char s;
+    scanf(" %c",&s);
+
 
     
     //the sublist should not be freed. If you are freeing the major one.

@@ -211,8 +211,11 @@ void Free(list** my_list){
         if(arr[i].Class==String){
             if(arr[i].Data.ref->refs==1){
                 free(arr[i].Data.ref->value);
+                free(arr[i].Data.ref);
+            }else{
+                printf("%s","dsfs\n");
+                arr[i].Data.ref->refs-=1;
             }
-            arr[i].Data.ref->refs-=1;
         }
     }
     free((*my_list)->arr);
