@@ -14,7 +14,6 @@ Re-Implementation of Pythonic list in c.
 - Capacity logic (that expansion and shrinking).
   
 ### Some caveats:
-- You need to free your strings, when you pop them.(You will need the string, offcourse)
-- You can mismatch Enums and unions.(i.e. c-related).
+- You don't need to free your strings, when you pop them.(It will check for refrence count.)
 - When you have a list of too much String. Even if you pop all of them, c memory management will not give the empty space to kernal.(BUT hey you can use that later, if needed)
 
