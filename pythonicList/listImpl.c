@@ -1,4 +1,3 @@
-#include <math.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -6,7 +5,7 @@
 #include <strings.h>
 #include "methods.c"
 
-#define MIN_CAPACITY 4
+#define MIN_CAPACITY 50
 
 list* initList(){
     int capacity = MIN_CAPACITY;

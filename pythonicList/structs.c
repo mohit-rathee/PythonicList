@@ -1,11 +1,11 @@
 #include <stdbool.h>
 
 typedef enum {
-    Int,
+    Int,   
     String,
-    Char,
-    Bool,
-    Null,
+    Char,  
+    Bool,  
+    Null,  
 } myclass;
 
 typedef struct {
@@ -15,7 +15,7 @@ typedef struct {
 
 typedef union {
     int num;
-    refrences* ref;
+    refrences* ref; // max size
     char chr;
     _Bool boool;
 } value;
